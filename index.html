@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>المكتبة - متجر مستلزمات مكتبية</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
     body { font-family: 'Amiri', serif; }
@@ -109,15 +108,15 @@
     <form id="order-form" class="space-y-4">
       <div>
         <label class="block mb-1">اسم العميل</label>
-        <input type="text" name="customer_name" id="customer-name" required class="w-full border rounded-lg p-2">
+        <input type="text" name="name" id="customer-name" required class="w-full border rounded-lg p-2">
       </div>
       <div>
         <label class="block mb-1">رقم الهاتف</label>
-        <input type="text" name="customer_phone" id="customer-phone" required class="w-full border rounded-lg p-2">
+        <input type="text" name="phone" id="customer-phone" required class="w-full border rounded-lg p-2">
       </div>
       <div>
         <label class="block mb-1">العنوان</label>
-        <input type="text" name="customer_address" id="customer-address" required class="w-full border rounded-lg p-2">
+        <input type="text" name="address" id="customer-address" required class="w-full border rounded-lg p-2">
       </div>
       <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700">تأكيد الشراء</button>
     </form>
@@ -136,8 +135,6 @@
 </footer>
 
 <script>
-emailjs.init("YOUR_PUBLIC_KEY"); // ضع هنا المفتاح العام الخاص بك من EmailJS
-
 let cart = [];
 const cartPopup = document.getElementById("cart-popup");
 const cartItems = document.getElementById("cart-items");
@@ -187,7 +184,7 @@ document.getElementById("checkout-btn").addEventListener("click", () => { checko
 // إغلاق الفورم
 closeFormBtn.addEventListener("click", () => { checkoutForm.classList.remove("show"); });
 
-// إرسال الطلب عبر EmailJS
+// إرسال الطلب على واتساب
 document.getElementById("order-form").addEventListener("submit", function(e){
   e.preventDefault();
   const customerName = document.getElementById("customer-name").value;
@@ -196,26 +193,25 @@ document.getElementById("order-form").addEventListener("submit", function(e){
   const orderDetails = cart.map(item => `${item.name} - ${item.price} جنيه`).join(", ");
   const totalPrice = cart.reduce((sum,item)=>sum+item.price,0);
 
-  const templateParams = {
-    customer_name: customerName,
-    customer_phone: customerPhone,
-    customer_address: customerAddress,
-    order_details: orderDetails,
-    total_price: totalPrice
-  };
+  const message = `طلب جديد:
+اسم العميل: ${customerName}
+رقم الهاتف: ${customerPhone}
+العنوان: ${customerAddress}
+تفاصيل الطلب: ${orderDetails}
+المجموع الكلي: ${totalPrice} جنيه`;
 
-  emailjs.send("service_go0i0re", "template_fjn20r4", Uawr-sC13x6JqcAa2)
-    .then(function(response){
-      alert("تم إرسال الطلب بنجاح!");
-      cart = [];
-      updateCart();
-      checkoutForm.classList.remove("show");
-      document.getElementById("order-form").reset();
-    }, function(error){
-      alert("حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.");
-      console.log(error);
-    });
+  // ضع هنا رقمك على واتساب بدون +
+  const whatsappNumber = "201024477513"; // استبدل هذا برقمك
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+
+  // تنظيف الفورم والسلة
+  cart = [];
+  updateCart();
+  checkoutForm.classList.remove("show");
+  document.getElementById("order-form").reset();
 });
 </script>
+
 </body>
-</html>
+  </html>
