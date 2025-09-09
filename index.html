@@ -109,15 +109,15 @@
     <form id="order-form" class="space-y-4">
       <div>
         <label class="block mb-1">اسم العميل</label>
-        <input type="text" name="name" id="customer-name" required class="w-full border rounded-lg p-2">
+        <input type="text" name="customer_name" id="customer-name" required class="w-full border rounded-lg p-2">
       </div>
       <div>
         <label class="block mb-1">رقم الهاتف</label>
-        <input type="text" name="phone" id="customer-phone" required class="w-full border rounded-lg p-2">
+        <input type="text" name="customer_phone" id="customer-phone" required class="w-full border rounded-lg p-2">
       </div>
       <div>
         <label class="block mb-1">العنوان</label>
-        <input type="text" name="address" id="customer-address" required class="w-full border rounded-lg p-2">
+        <input type="text" name="customer_address" id="customer-address" required class="w-full border rounded-lg p-2">
       </div>
       <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700">تأكيد الشراء</button>
     </form>
@@ -136,7 +136,7 @@
 </footer>
 
 <script>
-emailjs.init("service_go0i0re"); // ضع هنا مفتاحك العام من EmailJS
+emailjs.init("YOUR_PUBLIC_KEY"); // ضع هنا المفتاح العام الخاص بك من EmailJS
 
 let cart = [];
 const cartPopup = document.getElementById("cart-popup");
@@ -204,7 +204,7 @@ document.getElementById("order-form").addEventListener("submit", function(e){
     total_price: totalPrice
   };
 
-  emailjs.send("service_go0i0re", "template_fjn20r4", Uawr-sC13x6JqcAa2)
+  emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams)
     .then(function(response){
       alert("تم إرسال الطلب بنجاح!");
       cart = [];
